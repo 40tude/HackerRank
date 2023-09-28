@@ -32,6 +32,7 @@ def CloseIO()->None:
 # Y = BC x CD
 # cos(phi) = X.Y/|X||Y| dot prod
 
+
 class Vect(object):
   def __init__(self, A, B):
     self.x = B.x - A.x
@@ -57,18 +58,14 @@ class Point(object):
     self.z = z
 
 if __name__ == '__main__':
-  x, y ,z = map(float, input().split())
-  A = Point(x, y, z)
 
-  x, y ,z = map(float, input().split())
-  B = Point(x, y, z)
-  
-  x, y ,z = map(float, input().split())
-  C = Point(x, y, z)
-  
-  x, y ,z = map(float, input().split())
-  D = Point(x, y, z)
-  
+  MyPoints = list()
+  for i in range(4):
+    pt = list(map(float, input().split()))
+    MyPoints.append(pt)
+
+  A, B, C, D = Point(*MyPoints[0]), Point(*MyPoints[1]), Point(*MyPoints[2]), Point(*MyPoints[3])
+    
   AB = Vect(A, B)
   BC = Vect(B, C)
   CD = Vect(C, D)
@@ -80,4 +77,48 @@ if __name__ == '__main__':
   print(f"{math.degrees(math.acos(CosPhi)):.2f}")
 
   CloseIO()
+
+  '''
+class Points(object):
+    def __init__(self, x, y, z):
+      self.x = x
+      self.y = y
+      self.z = z
+
+    def __sub__(self, other):
+      return Points(self.x - other.x, self.y - other.y, self.z - other.z)
+
+    def dot(self, other):
+      return self.x * other.x + self.y * other.y + self.z * other.z
+
+    def cross(self, other):
+      x = self.y * other.z -  self.z * other.y    
+      y = self.z * other.x -  self.x * other.z    
+      z = self.x * other.y -  self.y * other.x 
+      return Points(x, y, z) 
+        
+    def absolute(self):
+        return pow((self.x ** 2 + self.y ** 2 + self.z ** 2), 0.5)
+
+if __name__ == '__main__':
+    points = list()
+    for i in range(4):
+        a = list(map(float, input().split()))
+        points.append(a)
+
+    a, b, c, d = Points(*points[0]), Points(*points[1]), Points(*points[2]), Points(*points[3])
+    x1 = b-a
+    x2 = c-b
+    x3 = x1.cross(x2)
+    x = (b - a).cross(c - b)
+    y = (c - b).cross(d - c)
+
+    tmp1 = x.dot(y)
+    tmp2 = (x.absolute() * y.absolute())
+
+    angle = math.acos(x.dot(y) / (x.absolute() * y.absolute()))
+
+    print("%.2f" % math.degrees(angle))
+    CloseIO()
+'''
 
