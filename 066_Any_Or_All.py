@@ -25,13 +25,13 @@ def CloseIO()->None:
 #True
 
 def IsPalindromic(n):
-  temp = n
-  rev = 0
+  tmp = n
+  reversed = 0
   while(n>0):
-    dig=n%10
-    rev=rev*10+dig
+    digit=n%10
+    reversed=reversed*10+digit
     n=n//10
-  if(temp==rev):
+  if(tmp==reversed):
     return(True)
   else:
     return(False)
