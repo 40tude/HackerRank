@@ -42,7 +42,9 @@ if __name__ == '__main__':
   
   # Voir aussi https://stackoverflow.com/questions/12643009/regular-expression-for-floating-point-numbers
   # MAIS ça marche pas
-  
+
+  # Voir : https://www.w3schools.com/python/python_regex.asp
+
   MyRegex = r"^[+-]?[0-9]*[.][0-9]*$"
   for i in range(n):
     data = input().strip()
