@@ -9,7 +9,7 @@ if RedirectIOToFile:
   gCwd = os.getcwd()
   gScriptDir = os.path.dirname(os.path.realpath(__file__))
   os.chdir(gScriptDir)
-  sys.stdin = open("./Blabla_Inputs.txt")
+  sys.stdin = open("./000_template_Inputs.txt")
 
 def CloseIO()->None:
   if RedirectIOToFile:
