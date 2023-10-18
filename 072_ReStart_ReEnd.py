@@ -39,8 +39,6 @@ if __name__ == '__main__':
 
   S = input().strip()
   k = input().strip()
-  S="jjhv"
-  k="z"
   
   if re.search(k, S) is not None:
     pattern = f"(?=({k}))"

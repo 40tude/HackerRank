@@ -20,7 +20,11 @@ select CITY from STATION where (CITY like "a%") OR (CITY like "e%") OR (CITY lik
 
 
 
--- 17 10
+
+/******************************************************************************
+17 10 2023
+******************************************************************************/
+
 -- Query the list of CITY names ending with vowels (a, e, i, o, u) from STATION. Your result cannot contain duplicates.
 select DISTINCT CITY from STATION where (CITY like "%a") OR (CITY like "%e") OR (CITY like "%i") OR (CITY like "%o") OR (CITY like "%u");
 
@@ -87,10 +91,60 @@ ORDER BY
 -- the shortest and longest CITY names, 
 -- as well as their respective lengths (i.e.: number of characters in the name). 
 -- If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.
-SELECT MAX(LENGTH(CITY)), LENGTH(CITY)
-FROM Stations
-WHERE (LENGTH(CITY)= OR (LENGTH(CITY)=MIN(LENGTH(CITY))
-ORDER by CITY ASC
+
+-- SELECT MAX(LENGTH(CITY)), LENGTH(CITY)
+-- FROM Stations
+-- WHERE (LENGTH(CITY)= OR (LENGTH(CITY)=MIN(LENGTH(CITY))
+-- ORDER by CITY ASC
+-- ;
+
+
+/******************************************************************************
+18 10 2023
+******************************************************************************/
+
+-- Query a count of the number of cities in CITY having a Population larger than 100000
+select COUNT(NAME) AS Nombre from CITY WHERE POPULATION>100000 
+
+-- Query the total population of all cities in CITY where District is California.
+select sum(POPULATION) from CITY where DISTRICT="California"
+
+-- Query the average population of all cities in CITY where District is California.
+select avg(POPULATION) from CITY where DISTRICT="California"
+
+-- Query the sum of the populations for all Japanese cities in CITY. The COUNTRYCODE for Japan is JPN.
+select sum(POPULATION) from CITY where COUNTRYCODE="JPN"
+
+
+-- Query the difference between the maximum and minimum populations in CITY.
+select max(POPULATION)-MIN(POPULATION) from CITY
+
+-- Query the average population for all cities in CITY, rounded down to the nearest integer.
+select CAST(avg(POPULATION) as SIGNED) from CITY; -- MySQL
+select CAST(avg(POPULATION) as INT) from CITY;    -- SQLite
+
+-- Query the sum of Northern Latitudes (LAT_N) from STATION having values greater than 38.7880 and less than 137.2375. 
+-- Truncate your answer to 4 decimal places.
+select ROUND(sum(LAT_N), 4) 
+from STATION 
+where
+  LAT_N > 38.7880
+  AND
+  LAT_N < 137.2345
+;
+
+-- Query the greatest value of the Northern Latitudes (LAT_N) from STATION that is less than 137.2345. 
+-- Truncate your answer to  decimal places.
+select ROUND(max(LAT_N), 4) 
+from STATION 
+where
+  LAT_N < 137.2345
 ;
 
 
+-- Query the smallest Northern Latitude (LAT_N) from STATION that is greater than 3877.80 . Round your answer to  decimal places.
+select ROUND(min(LAT_N), 4) 
+from STATION 
+where
+  LAT_N > 38.7880
+;
