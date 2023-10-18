@@ -30,11 +30,18 @@ def CloseIO()->None:
 # (1, 2)
 # (4, 5)
 
+
+
+# re.findall(pattern, string) returns a list of matching strings.
+# re.finditer(pattern, string) returns an iterator over MatchObject objects.
+
 # https://stackoverflow.com/questions/34774126/re-finditer-returning-same-value-for-start-and-end-methods
+
 # removing is not going to work (I want overlap)
 # start() and end() return the same value
 # I need to add the length by hand
 # Je dois sortir -1 si y a rien d'où la "bidouille" avec le if
+
 if __name__ == '__main__':
 
   S = input().strip()
@@ -51,5 +58,3 @@ if __name__ == '__main__':
 
   
 
-# re.findall(pattern, string) returns a list of matching strings.
-# re.finditer(pattern, string) returns an iterator over MatchObject objects.

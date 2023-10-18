@@ -10,6 +10,11 @@ FROM mytable
     LIMIT count OFFSET COUNT;
 */
 
+-- Voir aussi les exos sur aussi : https://sqlbolt.com/
+
+
+
+
 -- Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table.
 select  (count(CITY)- count(distinct CITY)) from STATION; 
 
@@ -85,18 +90,62 @@ ORDER BY
 ;  
 
 
--- MARCHE PAS !!!!!!!!!!!!!!!
 -- https://www.hackerrank.com/challenges/weather-observation-station-5/problem?isFullScreen=true
 -- Query the two cities in STATION with 
 -- the shortest and longest CITY names, 
 -- as well as their respective lengths (i.e.: number of characters in the name). 
 -- If there is more than one smallest or largest city, choose the one that comes first when ordered alphabetically.
 
--- SELECT MAX(LENGTH(CITY)), LENGTH(CITY)
--- FROM Stations
--- WHERE (LENGTH(CITY)= OR (LENGTH(CITY)=MIN(LENGTH(CITY))
--- ORDER by CITY ASC
--- ;
+-- Fonctionne dans SQLite sur le premier exemple mais pas dans MySQL !!!
+create table STATION (
+  CITY text
+);
+
+INSERT INTO STATION (CITY) VALUES 
+('WXY'),
+('ABC'),
+('DEF'),
+('PQRS')
+;
+
+SELECT * 
+FROM STATION
+;
+
+SELECT CITY, MIN(LENGTH(CITY))    
+FROM (
+  SELECT * 
+  FROM STATION
+  ORDER BY CITY ASC
+)
+;
+
+SELECT CITY, MAX(LENGTH(CITY))    
+FROM (
+  SELECT * 
+  FROM STATION
+  ORDER BY CITY ASC
+)
+;
+
+-- Fonctionne avec MySQL
+-- Penser à LIMIT 1
+SELECT CITY, MIN(LENGTH(CITY))
+FROM STATION
+GROUP BY CITY
+ORDER BY MIN(LENGTH(CITY)) ASC, CITY ASC
+LIMIT 1
+;
+
+SELECT CITY, MAX(LENGTH(CITY))
+FROM STATION
+GROUP BY CITY
+ORDER BY MAX(LENGTH(CITY)) DESC, CITY ASC
+LIMIT 1
+;
+
+
+
 
 
 /******************************************************************************
