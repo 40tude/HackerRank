@@ -56,7 +56,6 @@ def CloseIO()->None:
 if __name__ == '__main__':
   
   list_of_dim = list(map(int, input().split()))
-  # print(np.zeros((1, 3, 3), dtype=int))
 
   print(np.zeros(list_of_dim, dtype=int))
   print(np.ones (list_of_dim, dtype=int))
