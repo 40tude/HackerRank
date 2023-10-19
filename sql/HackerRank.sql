@@ -197,3 +197,35 @@ from STATION
 where
   LAT_N > 38.7880
 ;
+
+
+/******************************************************************************
+19 10 2023
+******************************************************************************/
+-- Somme des population des villes d'asie
+select sum(CITY.POPULATION) 
+from CITY
+join COUNTRY on CITY.COUNTRYCODE=COUNTRY.CODE
+where COUNTRY.CONTINENT="Asia"
+;
+
+
+-- Given the CITY and COUNTRY tables, query the names of all cities where the CONTINENT is 'Africa'.
+-- Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+select CITY.NAME 
+from CITY
+join COUNTRY on CITY.COUNTRYCODE=COUNTRY.CODE
+where COUNTRY.CONTINENT="Africa"
+;
+
+
+-- Given the CITY and COUNTRY tables, 
+-- query the names of all the continents (COUNTRY.Continent) 
+-- and their respective average city populations (CITY.Population) rounded down to the nearest integer.
+-- Note: CITY.CountryCode and COUNTRY.Code are matching key columns.
+
+-- Floor. MySQL. Return the largest integer value that is less than or equal to the argument
+select COUNTRY.CONTINENT, FLOOR(avg(CITY.POPULATION)) 
+from CITY
+join COUNTRY on CITY.COUNTRYCODE=COUNTRY.CODE
+group by COUNTRY.CONTINENT;
