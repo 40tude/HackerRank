@@ -1,55 +1,87 @@
 # 18 10 - Ver intiale
 # 19 10 - Modifie le contenu du fichier input
+# 21 10 - levarage click (Excelent !!!!)
 
-# TO DO : option "overwrite"
+# DONE : option "overwrite"
+# DONE  : option 'verbose"
 # TO DO : option 'template_dir"
-
+# TO DO : manage multiple prj_name ? What would be the use case?
 
 from pathlib import Path
 import sys
+
+# https://realpython.com/python-click/
+import click
 
 kTemplateDir ="./templates"
 kTemplate1 = "000_template.py"
 kTemplate2 = "000_template_Inputs.txt"
 kReplace = "$$TXT_TO_REPLACE$$"
 
-def main():
-    if((len(sys.argv)==1) or (len(sys.argv[1])==0)) :
-        print("You should at least pass the name of the project to be created.")
-        print("Usage : >python ./templates/new_prj 089_NameOfProject")
-        print("Generates 2 files in the directory from where new_project is called : 089_NameOfProject.py and 089_NameOfProject_Inputs.txt")
-        exit()
-    
-    file_path = Path.cwd()
-    src = Path(file_path, kTemplateDir, kTemplate1)
+# ##############################################################################
+@click.command("new_prj")
+@click.version_option("0.1.0", prog_name="new_prj")
 
-    prj_name = sys.argv[1]
-    input_file = prj_name + ".py"
-    dst = Path(input_file)
-    # DONE - Vérifier si le fichier existe
-    # DONE - Si oui demander confirmation de ré-écriture
-    if (dst.exists()):
-        ans = input(f"{dst} already exists. Overwrite ? y[N] :")
-        ans = ans.upper() 
-        if (ans!="Y"): # gere aussi le cas où ans==""
-          print("The confirmation was not 'Y' or 'y'.")
-          print("Operation cancelled.")              
-          exit()
-    dst.write_bytes(src.read_bytes())    
+@click.option(
+  "-v", 
+  "--verbose", 
+  is_flag=True,
+  help="Display information while the command runs.",
+)
 
-    src = Path(file_path, kTemplateDir, kTemplate2)
-    input_file = prj_name + "_Inputs.txt"
-    dst = Path(input_file)
-    dst.write_bytes(src.read_bytes())    
+@click.option(
+  "-o", 
+  "--overwrite", 
+  is_flag=True,
+  help="Overwrite existing PRJ_NAME.py and PRJ_NAME_Inputs.txt files.",
+)  # default value is False
 
-    # Modification du fichier .py pour lire le bon fichier _Inputs.txt
-    src_filename = prj_name + ".py"
-    src = Path(src_filename)
-    filedata = src.read_text()
-    filedata = filedata.replace(kReplace, input_file)
-    src.write_text(filedata)
+@click.argument(
+  "prj_name",
+  nargs=1,         # only one prj_name can be managed so far
+)
 
-    print("Done")
-    
-if __name__ == "__main__":
-    main()
+# ##############################################################################
+def cli(prj_name, verbose, overwrite):
+  '''
+    Create a ready to use HackerRank project consisting of two files (.py and _Inputs.txt files).
+    PRJ_NAME is a valid filename.
+    PRJ_NAME.py and PRJ_NAME_Inputs.txt files will be created in the directory from where this command is called.
+  '''
+
+  file_path = Path.cwd()
+  src = Path(file_path, kTemplateDir, kTemplate1)
+  python_filename = prj_name + ".py"
+  dst = Path(python_filename)
+  # DONE - Check if the file exists
+  # DONE - If yes ask for confirmation before overwrite
+  if (dst.exists() and overwrite==False):
+      if not click.confirm(f"'{dst}' already exists. Overwrite?"):
+        click.echo("Operation aborted.")              
+        raise SystemExit(1)
+  
+  dst.write_bytes(src.read_bytes())   
+  if verbose:
+    click.echo(f"{python_filename} created.")
+
+  src = Path(file_path, kTemplateDir, kTemplate2)
+  inputs_file = prj_name + "_Inputs.txt"
+  dst = Path(inputs_file)
+  dst.write_bytes(src.read_bytes())
+  if verbose:  
+    click.echo(f"{inputs_file} created.")
+  
+  # Modify the content of prj_name.py in order to open prj_name_Inputs.txt
+  src_filename = prj_name + ".py"
+  src = Path(src_filename)
+  filedata = src.read_text()
+  filedata = filedata.replace(kReplace, inputs_file)
+  src.write_text(filedata)
+  if verbose:
+    click.echo(f"Content of {src_filename} updated.")
+  
+  click.echo("Done.")
+
+# ##############################################################################
+if __name__ == '__main__':
+  cli()

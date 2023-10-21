@@ -8,33 +8,12 @@
 from pathlib import Path
 import sys
 
-# https://realpython.com/python-click/
-# https://www.codium.ai/blog/building-user-friendly-python-command-line-interfaces-with-click/
-import click
-
 kTemplateDir ="./templates"
 kTemplate1 = "000_template.py"
 kTemplate2 = "000_template_Inputs.txt"
 kReplace = "$$TXT_TO_REPLACE$$"
 
-
-
-# @click.command()
-# @click.argument('project_name')
-# #@click.option('--greeting', '-g', default='Hello', help='The name of the project.', required=True, type=str)
-
-# #def mycommand(name, greeting):
-# def mycommand(prj_name):
-
-#     '''
-#     This command creates a new project to be used with HackerRank challenges.
-#     '''
-#     #click.echo(greeting + " " + name)
-    
-    
-
 def main():
-
     if((len(sys.argv)==1) or (len(sys.argv[1])==0)) :
         print("You should at least pass the name of the project to be created.")
         print("Usage : >python ./templates/new_prj 089_NameOfProject")
@@ -69,9 +48,8 @@ def main():
     filedata = src.read_text()
     filedata = filedata.replace(kReplace, input_file)
     src.write_text(filedata)
-    
+
     print("Done")
     
 if __name__ == "__main__":
     main()
-    # mycommand()

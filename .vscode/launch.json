@@ -11,8 +11,8 @@
       "program": "${file}",
       "console": "integratedTerminal",
       "justMyCode": true,
-      //"args" : ["100_Pour_Le_Fun"]
-      "args" : ["--help"]
+      "args" : ["100_Pour_Le_Fun", "-v", "-o"]
+      //"args" : ["--help"]
     }
   ]
 }
