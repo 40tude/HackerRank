@@ -9,7 +9,10 @@ HAVING constraint_expression
 ORDER BY column ASC/DESC
 LIMIT count OFFSET COUNT;
  */
+
 -- Voir aussi les exos sur aussi : https://sqlbolt.com/
+
+
 -- Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table.
 SELECT
   (COUNT(CITY) - COUNT(DISTINCT CITY))
