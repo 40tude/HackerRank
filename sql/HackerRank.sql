@@ -9,10 +9,7 @@ HAVING constraint_expression
 ORDER BY column ASC/DESC
 LIMIT count OFFSET COUNT;
  */
-
 -- Voir aussi les exos sur aussi : https://sqlbolt.com/
-
-
 -- Find the difference between the total number of CITY entries in the table and the number of distinct CITY entries in the table.
 SELECT
   (COUNT(CITY) - COUNT(DISTINCT CITY))
@@ -449,15 +446,57 @@ FROM
 -- Isosceles: It's a triangle with  sides of equal length.
 -- Scalene: It's a triangle with  sides of differing lengths.
 -- Not A Triangle: The given values of A, B, and C don't form a triangle. Cannot form a triangle because the combined value of sides A and B is not larger than that of side .
-
 -- Not sure it works with SQLite
-SELECT 
-  CASE  
-    WHEN (A+B)<=C THEN "Not A Triangle"
-    WHEN A=B AND A=C THEN "Equilateral"
-    WHEN A=B OR A=C OR B=C THEN "Isosceles" 
-    WHEN A<>B AND B<>C THEN "Scalene"
-  END 
-FROM 
-  TRIANGLES
-;
+SELECT
+  CASE
+    WHEN (A + B) <= C THEN "Not A Triangle"
+    WHEN A = B
+    AND A = C THEN "Equilateral"
+    WHEN A = B
+    OR A = C
+    OR B = C THEN "Isosceles"
+    WHEN A <> B
+    AND B <> C THEN "Scalene"
+  END
+FROM
+  TRIANGLES;
+
+/******************************************************************************
+21 10 2023
+ ******************************************************************************/
+
+-- Consider P1(a,b) and P2(c,d) to be two points on a 2D plane.
+-- a happens to equal the minimum value in Northern Latitude (LAT_N in STATION).
+-- b happens to equal the minimum value in Western Longitude (LONG_W in STATION).
+-- c happens to equal the maximum value in Northern Latitude (LAT_N in STATION).
+-- d happens to equal the maximum value in Western Longitude (LONG_W in STATION).
+-- Query the Manhattan Distance between points P1 and P2 and round it to a scale of  decimal places.
+-- Manhattan Distance = |xb-xa| + |yb-ya|
+SELECT
+  ROUND(
+    ABS(MAX(LAT_N) - MIN(LAT_N)) + ABS(MAX(LONG_W) - MIN(LONG_W)),
+    4
+  )
+FROM
+  STATION;
+
+-- Consider P1(a, c) and P2(b,d) to be two points on a 2D plane 
+-- where (a,b) are the respective minimum and maximum values of Northern Latitude (LAT_N) 
+-- and (c,d) are the respective minimum and maximum values of Western Longitude (LONG_W) in STATION.
+-- Query the Euclidean Distance between points P1 and P2 
+-- and format your answer to display  decimal digits. 
+-- Euclidean Distance = sqrt((x2-x1)² + (y2-y1)²)
+-- a minimum LAT_N
+-- b maximum LAT_N
+-- c minimum LONG_W 
+-- d maximum LONG_W
+
+SELECT
+  ROUND(
+    SQRT(
+      (MIN(LAT_N) - MAX(LAT_N)) * (MIN(LAT_N) - MAX(LAT_N))  + 
+      (MAX(LONG_W) - MIN(LONG_W)) * (MAX(LONG_W) - MIN(LONG_W))),
+    4
+  )
+FROM
+  STATION;
