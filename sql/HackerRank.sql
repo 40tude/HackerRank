@@ -464,7 +464,6 @@ FROM
 /******************************************************************************
 21 10 2023
  ******************************************************************************/
-
 -- Consider P1(a,b) and P2(c,d) to be two points on a 2D plane.
 -- a happens to equal the minimum value in Northern Latitude (LAT_N in STATION).
 -- b happens to equal the minimum value in Western Longitude (LONG_W in STATION).
@@ -490,13 +489,71 @@ FROM
 -- b maximum LAT_N
 -- c minimum LONG_W 
 -- d maximum LONG_W
-
 SELECT
   ROUND(
     SQRT(
-      (MIN(LAT_N) - MAX(LAT_N)) * (MIN(LAT_N) - MAX(LAT_N))  + 
-      (MAX(LONG_W) - MIN(LONG_W)) * (MAX(LONG_W) - MIN(LONG_W))),
+      (MIN(LAT_N) - MAX(LAT_N)) * (MIN(LAT_N) - MAX(LAT_N)) + (MAX(LONG_W) - MIN(LONG_W)) * (MAX(LONG_W) - MIN(LONG_W))
+    ),
     4
   )
 FROM
   STATION;
+
+
+
+/******************************************************************************
+21 10 2023
+ ******************************************************************************/
+
+
+-- Generate the following two result sets:
+-- Query an alphabetically ordered list of all names in OCCUPATIONS, 
+-- immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). 
+-- For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
+-- Query the number of ocurrences of each occupation in OCCUPATIONS. 
+-- Sort the occurrences in ascending order, and output them in the following format:
+-- There are a total of [occupation_count] [occupation]s.
+SELECT
+  concat (Name, "(", LEFT (Occupation, 1), ")")
+FROM
+  occupations
+ORDER BY
+  name;
+
+SELECT
+  concat (
+    "There are a total of ",
+    COUNT(Occupation),
+    " ",
+    LOWER(Occupation),
+    "s."
+  )
+FROM
+  occupations
+GROUP BY
+  Occupation
+ORDER BY
+  COUNT(Occupation);
+
+-- https://www.hackerrank.com/challenges/the-report/problem
+-- Ketty gives Eve a task to generate a report containing three columns: Name, Grade and Mark. 
+-- Ketty doesn't want the NAMES of those students who received a grade lower than 8. 
+-- The report must be in descending order by grade 
+-- i.e. higher grades are entered first. 
+-- If there is more than one student with the same grade (8-10) assigned to them, order those particular students by their name alphabetically. 
+-- Finally, if the grade is lower than 8, use "NULL" as their name and list them by their grades in descending order. 
+-- If there is more than one student with the same grade (1-7) assigned to them, order those particular students by their marks in ascending order.
+SELECT
+  CASE
+    WHEN Grades.grade < 8 THEN NULL
+    WHEN Grades.grade >= 8 THEN Students.name
+  END,
+  Grades.grade,
+  Students.marks
+FROM
+  Students
+  INNER JOIN Grades ON Students.marks BETWEEN Grades.min_mark AND Grades.max_mark
+ORDER BY
+  Grades.grade DESC,
+  Students.name ASC,
+  Students.Marks ASC;
