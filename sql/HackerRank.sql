@@ -502,7 +502,7 @@ FROM
 
 
 /******************************************************************************
-21 10 2023
+24 10 2023
  ******************************************************************************/
 
 
@@ -557,3 +557,35 @@ ORDER BY
   Grades.grade DESC,
   Students.name ASC,
   Students.Marks ASC;
+
+
+/******************************************************************************
+25 10 2023
+******************************************************************************/
+
+-- https://www.hackerrank.com/challenges/binary-search-tree-1/problem?isFullScreen=true
+-- Les 2 fonctionnent
+SELECT N,
+  CASE
+    WHEN P is NULL THEN "Root"                                     
+    WHEN (SELECT COUNT(*) FROM BST WHERE Zoubida.N=P)>0 THEN "Inner"        
+    ELSE "Leaf"       
+  END 
+FROM BST as Zoubida
+ORDER BY N;
+
+-- SELECT N,
+--   CASE
+--     WHEN P is NULL THEN "Root"                                     
+--     WHEN Zoubida.N in (select P from BST) THEN "Inner"        
+--     ELSE "Leaf"       
+--   END 
+-- FROM BST as Zoubida
+-- ORDER BY N;
+
+
+-- https://www.hackerrank.com/challenges/full-score/problem?isFullScreen=true
+-- print hacker_id and name of hackers 
+-- who achieved full scores for more than one challenge. 
+-- Order your output in descending order by the total number of challenges in which the hacker earned a full score. 
+-- If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
