@@ -584,8 +584,105 @@ ORDER BY N;
 -- ORDER BY N;
 
 
--- https://www.hackerrank.com/challenges/full-score/problem?isFullScreen=true
--- print hacker_id and name of hackers 
--- who achieved full scores for more than one challenge. 
--- Order your output in descending order by the total number of challenges in which the hacker earned a full score. 
--- If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
+/******************************************************************************
+28 10 2023
+******************************************************************************/
+-- https://www.metabase.com/learn/sql-questions/sql-best-practices
+
+-- https://www.hackerrank.com/challenges/the-company/problem?isFullScreen=false
+-- Given the table schemas below, write a query to print 
+-- the company_code
+-- founder name
+-- total number of lead managers
+-- total number of senior managers
+-- total number of managers
+-- total number of employees. 
+
+-- Order your output by ascending company_code.
+-- The tables may contain duplicate records.
+-- The company_code is string, so the sorting should not be numeric. 
+-- For example, if the company_codes are C_1, C_2, and C_10, then the ascending company_codes will be C_1, C_10, and C_2.
+
+SELECT  COMPANY.company_code,
+        COMPANY.founder,
+        COUNT(DISTINCT LEAD_MANAGER.lead_manager_code   ),
+        COUNT(DISTINCT SENIOR_MANAGER.senior_manager_code ),
+        COUNT(DISTINCT MANAGER.manager_code        ),
+        COUNT(DISTINCT EMPLOYEE.employee_code       )
+FROM COMPANY
+JOIN LEAD_MANAGER ON COMPANY.company_code = LEAD_MANAGER.company_code
+JOIN SENIOR_MANAGER ON COMPANY.company_code = SENIOR_MANAGER.company_code
+JOIN MANAGER ON COMPANY.company_code = MANAGER.company_code
+JOIN EMPLOYEE ON COMPANY.company_code = EMPLOYEE.company_code
+GROUP BY COMPANY.company_code, COMPANY.founder
+ORDER BY COMPANY.company_code ASC
+;
+
+
+select distinct cp.company_code, 
+                cp.founder, 
+                (select count(distinct lead_manager_code) from Lead_Manager lm where lm.company_code = cp.company_code) lead_manager_number,
+                (select count(distinct senior_manager_code) from Senior_Manager sm where sm.company_code = cp.company_code) senior_manager_number,
+                (select count(distinct manager_code) from Manager mn where mn.company_code = cp.company_code) manager_number,
+                (select count(distinct employee_code) from Employee ep where ep.company_code = cp.company_code) employee_number
+from company cp 
+order by company_code asc
+;
+
+
+
+-- https://www.hackerrank.com/challenges/weather-observation-station-20/problem?isFullScreen=false
+-- Query the median of the Northern Latitudes (LAT_N) from STATION 
+-- and round your answer to  decimal places.
+
+SELECT
+  ROUND(MEDIAN(LAT_N), 4)
+FROM
+  STATION
+;
+
+-- https://www.geeksforgeeks.org/calculate-median-in-mysql/
+-- Beginning with the internal subquery – the select assigns @rowindex as an incremental index for each distance that is selected and sorts the distance.
+-- Once we have the sorted list of distances, the outer query will fetch the middle items in the array. If the array contains an odd number of items, both values will be the single middle value.
+-- Then, the SELECT clause of the outer query returns the average of those two values as the median value.
+
+SET @rowindex := -1;
+SELECT ROUND(AVG(d.distance), 4) as Median 
+FROM
+   (SELECT @rowindex:=@rowindex + 1 AS rowindex,
+           STATION.LAT_N AS distance
+    FROM STATION
+    ORDER BY STATION.LAT_N) AS d
+WHERE
+d.rowindex IN (FLOOR(@rowindex / 2), CEIL(@rowindex / 2));
+
+
+SET @i := -1;
+SELECT ROUND(AVG(Sub_Table.latitude), 4) 
+FROM
+   (SELECT @i:=@i + 1 AS i,
+           STATION.LAT_N AS latitude
+    FROM STATION
+    ORDER BY STATION.LAT_N) AS Sub_Table
+WHERE
+Sub_Table.i IN (FLOOR(@i / 2), CEIL(@i / 2));
+
+-- Pour décortiquer
+SET @i := -1;
+SELECT 
+@i:=@i + 1 AS i,
+STATION.LAT_N AS latitude
+FROM STATION
+ORDER BY STATION.LAT_N
+limit 10;
+
+-- 0 25.07352606
+-- 1 25.40836031
+-- 2 25.41948948
+-- 3 27.21713791
+-- 4 27.25445814
+-- 5 27.28675141
+-- 6 27.31872893
+-- 7 27.34698627
+-- 8 27.67194236
+-- 9 27.98898068
